@@ -1,19 +1,13 @@
-// * DEPENDENCIES * //
-import { useState, useEffect, useRef, useContext, useCallback } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// * REDUX SLICE * //
 import { getConversation, sendMessage, updater } from '../../features/conversation/conversationSlice';
-import { SocketContext, socket } from '../../context/SocketContext';
+import { SocketContext } from '../../context/SocketContext';
 
-// * COMPONENTS * //
 import Input from '../Input/Input';
 import Message from './Message';
 import ConversationNavbar from '../ConversationNavbar';
-
-// * STYLES * //
-import './Conversation.scss';
 
 const Conversation = () => {
     const { friendID } = useParams();
@@ -59,12 +53,12 @@ const Conversation = () => {
     useEffect(() => { scrollToBottom(); }, [messages]);
 
     return (
-        <div className="Conversation">
+        <div className="flex flex-col justify-between w-full h-full relative">
             <ConversationNavbar>
                 <p>{receiver?.username}</p>
             </ConversationNavbar>
 
-            <div className="Conversation__messages">
+            <div className="flex-1 overflow-y-scroll overflow-x-hidden">
                 {messages?.map((message) => (
                     <Message
                         message={message}
@@ -77,7 +71,7 @@ const Conversation = () => {
             </div>
 
             <form
-                className="Conversation__Footer"
+                className="w-full bg-[#283046] p-4"
                 onSubmit={(e) => handleSubmit(e)}
             >
                 <Input

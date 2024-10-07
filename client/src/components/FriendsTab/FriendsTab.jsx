@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 // * REDUX SLICE * //
 import { updateOnline, createFriendRequest, reset } from '../../features/friends/friendsSlice';
-import { SocketContext, socket } from '../../context/SocketContext';
+import { SocketContext } from '../../context/SocketContext';
 
 // * COMPONENTS * //
 import Button from '../Button';
@@ -14,9 +14,6 @@ import Modal from '../../components/Modal/Modal';
 import FriendsList from './FriendsList';
 import PendingList from './PendingList';
 import ConversationNavbar from '../ConversationNavbar';
-
-// * STYLES * //
-import './FriendsTab.scss';
 import OnlineList from '../OnlineList';
 
 const FriendsTab = () => {
@@ -31,11 +28,14 @@ const FriendsTab = () => {
 
     useEffect(() => {
         socket.emit('get_online_friends', user.details._id);
-        setInterval(() => socket.emit('get_online_friends', user.details._id), 10000);
+        const interval = setInterval(() => socket.emit('get_online_friends', user.details._id), 10000);
         socket.on('receive_online_friends', onlineFriends => dispatch(updateOnline(onlineFriends)));
 
-        return () => { socket.off('receive_online_friends'); };
-    }, [socket]);
+        return () => {
+            socket.off('receive_online_friends');
+            clearInterval(interval);
+        };
+    }, [socket, user.details._id, dispatch]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -48,18 +48,18 @@ const FriendsTab = () => {
         if (success) {
             setIsModalOpen(false);
             toast.success(`Sent a friend request to ${friendFullUsername}`);
-            socket.emit('friend_request_notification', lastRequest)
+            socket.emit('friend_request_notification', lastRequest);
             dispatch(reset());
-        };
+        }
 
         if (Error) {
             toast.error(Error);
             dispatch(reset());
-        };
-    }, [success, Error]);
+        }
+    }, [success, Error, friendFullUsername, lastRequest, dispatch, socket]);
 
     return (
-        <div className="FriendsTab">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_250px] grid-rows-[fit-content_repeat(2,_fit-content)] gap-0">
             <Modal
                 isModalOpen={isModalOpen}
                 close={() => setIsModalOpen(false)}
@@ -74,8 +74,7 @@ const FriendsTab = () => {
                     placeholder={'Valkyrie#0001'}
                     onChange={e => setFriendFullUsername(e.target.value)}
                     friendFullUsername={friendFullUsername}
-                >
-                </Input>
+                />
             </Modal>
 
             <Toaster
@@ -85,15 +84,15 @@ const FriendsTab = () => {
             />
 
             <ConversationNavbar>
-                <div>
+                <div className="flex items-center space-x-2">
                     <p>Friends</p>
-                    <Button onClick={() => setCurrentTab('friends')} variant={'transparent'} width={'80px'} height={'30px'}>Friends</Button>
-                    <Button onClick={() => setCurrentTab('pending')} variant={'transparent'} width={'80px'} height={'30px'}>Pending</Button>
+                    <Button onClick={() => setCurrentTab('friends')} variant={'transparent'} className="w-20 h-7">Friends</Button>
+                    <Button onClick={() => setCurrentTab('pending')} variant={'transparent'} className="w-20 h-7">Pending</Button>
                 </div>
-                <Button onClick={() => setIsModalOpen(true)} variant={'transparent'} width={'80px'} height={'30px'}>Add Friend</Button>
+                <Button onClick={() => setIsModalOpen(true)} variant={'transparent'} className="w-20 h-7">Add Friend</Button>
             </ConversationNavbar>
 
-            <div className="Friends-container">
+            <div className="overflow-y-scroll p-4 h-full pb-16">
                 {currentTab === 'friends' && <FriendsList />}
                 {currentTab === 'pending' && <PendingList />}
             </div>

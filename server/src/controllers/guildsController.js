@@ -5,7 +5,6 @@ const guildModel = require("../models/guildModel");
 const inviteModel = require('../models/inviteModel');
 const userModel = require("../models/userModel");
 const channelModel = require('../models/channelModel');
-const cloudinary = require("../config/cloudinary");
 
 // * GET GUILD * //
 // @desc    get single guild
@@ -64,7 +63,7 @@ const postGuild = asyncHandler(async (req, res) => {
 
     let uploadedFile;
     if (req.body.icon) {
-        uploadedFile = await cloudinary.uploader.upload(req.body.icon, { upload_preset: 'guild_icons' });
+        uploadedFile = ""
     };
 
     const guild = await guildModel.create({

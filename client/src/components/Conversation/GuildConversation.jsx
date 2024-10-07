@@ -1,19 +1,13 @@
-// * DEPENDENCIES * //
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-// * REDUX SLICE * //
 import { getGuild, getChannelMessages, createGuildMessage, updater } from '../../features/guilds/guildsSlice';
-import { SocketContext, socket } from '../../context/SocketContext';
+import { SocketContext } from '../../context/SocketContext';
 
-// * COMPONENTS * //
 import Input from '../Input/Input';
 import GuildMessage from './GuildMessage';
 import ConversationNavbar from '../ConversationNavbar';
-
-// * STYLES * //
-import './Conversation.scss';
 
 const GuildConversation = () => {
     const dispatch = useDispatch();
@@ -52,7 +46,7 @@ const GuildConversation = () => {
         const message = {
             channelID,
             content: messageContent,
-        }
+        };
 
         dispatch(createGuildMessage(message));
         setMessageContent('');
@@ -63,12 +57,12 @@ const GuildConversation = () => {
     const scrollToBottom = () => { scrollRef.current?.scrollIntoView(); };
 
     return (
-        <div className="Conversation">
+        <div className="flex flex-col justify-between w-full h-full relative">
             <ConversationNavbar>
                 <p>#{channel?.name}</p>
             </ConversationNavbar>
 
-            <div className="Conversation__messages">
+            <div className="flex-1 overflow-y-scroll overflow-x-hidden">
                 {messages?.map((message) => (
                     <GuildMessage
                         message={message}
@@ -80,7 +74,7 @@ const GuildConversation = () => {
             </div>
 
             <form
-                className="Conversation__Footer"
+                className="w-full bg-[#283046] p-4"
                 onSubmit={(e) => handleSubmit(e)}
             >
                 <Input

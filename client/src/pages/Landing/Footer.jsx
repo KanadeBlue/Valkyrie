@@ -1,29 +1,13 @@
-import styled from 'styled-components';
-
-const StyledFooter = styled.div`
-    position: absolute;
-    width: 100%;
-    max-width: 1180px;
-    bottom: 1%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
-    svg{font-size: 1.5rem;}
-`;
-
 const Footer = () => {
     return (
-        <StyledFooter>
-            <h6>
-                Developed by <a href='https://github.com/khaledxyz/' target='_blank' >khaled.xyz </a>
-                See on <a href='https://github.com/khaledxyz/valkyrie' target='_blank'>GitHub</a>
+        <div className="absolute w-full max-w-[1180px] bottom-1 flex items-center justify-center text-center">
+            <h6 className="text-lg"> {/* You can adjust the text size with Tailwind's text size utilities */}
+                Developed by <a href='https://github.com/khaledxyz/' target='_blank' rel="noopener noreferrer" className="text-blue-500 hover:underline">khaled.xyz</a>
+                {' '}See on <a href='https://github.com/khaledxyz/valkyrie' target='_blank' rel="noopener noreferrer" className="text-blue-500 hover:underline">GitHub</a>
                 <br />
                 &#9888; Data gets wiped every 24 hours
             </h6>
-        </StyledFooter >
+        </div>
     );
 };
 

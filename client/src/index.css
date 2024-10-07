@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --ebony: #17181f;
+    --madison: #0b3460;
+    --down-river: #283046;
+    --lavender-blush: #F5E6E8;
+    --maastricht-blue: #001f3f;
+    --hover-maastricht-blue: #02305f;
+    --box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    --border-radius: 0.5rem; /* This will be used for your custom border radius */
+}
+

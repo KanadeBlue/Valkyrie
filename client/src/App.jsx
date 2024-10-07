@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import AppRoutes from './routes/index'
 
 // * STYLES * //
+import './index.css';
 import './sass/index.scss';
 
 const App = () => {

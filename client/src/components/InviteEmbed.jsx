@@ -1,29 +1,19 @@
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import Button from './Button';
-
-const StyledInviteEmbed = styled.div`
-    width: 100%;
-    min-width: 200px;
-    max-width: 400px;
-    height: 100px;
-
-    border-radius: var(--border-radius);
-    padding: 5px 10px;
-    background-color: var(--maastricht-blue);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-`;
 
 const InviteEmbed = ({ inviteID }) => {
     const navigate = useNavigate();
     return (
-        <StyledInviteEmbed>
-            <p>You have been invited to join this server</p>
-            <Button width={'100px'} onClick={() => navigate(`/invite/${inviteID}`)}>Join</Button>
-        </StyledInviteEmbed>
+        <div className="w-full min-w-[200px] max-w-[400px] h-[100px] p-2 bg-[#4E6E9E] rounded-md flex flex-col justify-center">
+            <p className="text-white text-center">You have been invited to join this server</p>
+            <Button
+                width={'100px'}
+                onClick={() => navigate(`/invite/${inviteID}`)}
+                className="mt-2 mx-auto" // Center the button horizontally
+            >
+                Join
+            </Button>
+        </div>
     );
 };
 

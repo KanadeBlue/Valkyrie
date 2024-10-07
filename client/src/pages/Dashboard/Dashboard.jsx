@@ -8,8 +8,6 @@ import toast, { Toaster } from 'react-hot-toast';
 import { SocketContext } from '../../context/SocketContext';
 
 // * COMPONENTS * //
-import StyledDashboard, { App, Notification } from './StyledDashboard';
-
 import ServerList from '../../components/ServerList/ServerList';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import FriendsTab from '../../components/FriendsTab/FriendsTab';
@@ -54,19 +52,23 @@ const Dashboard = () => {
                 toastOptions={{ style: { backgroundColor: '#14151e', color: '#fff', fontSize: '0.8rem' } }}
             />
 
-            <StyledDashboard>
-                {notifications.length > 0 && <Notification>{notifications.length}</Notification>}
+            <div className="flex w-screen h-screen">
+                {notifications.length > 0 && (
+                    <div className="z-10 absolute top-[55px] left-[45px] flex items-center justify-center w-[15px] h-[15px] text-xs font-bold rounded-full bg-red-600 outline outline-2 outline-black">
+                        {notifications.length}
+                    </div>
+                )}
                 <ServerList />
                 <Sidebar />
 
-                <App>
+                <div className="w-full h-full bg-[#003a70]"> {/* Replace with your desired background color */}
                     <Routes>
                         <Route path={':guildID/:channelID'} element={<GuildConversation />} />
                         <Route path={'@me/:friendID'} element={<Conversation />} />
                         <Route path={'@me'} element={<FriendsTab />} />
                     </Routes>
-                </App>
-            </StyledDashboard>
+                </div>
+            </div>
         </SocketContext.Provider>
     );
 };

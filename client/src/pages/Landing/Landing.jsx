@@ -1,24 +1,16 @@
-import styled from 'styled-components';
 import { DiGithubFull } from 'react-icons/di';
 
 import Navbar from '../../components/Navbar';
 import Hero from './Hero';
 import Footer from './Footer';
 
-const StyledLanding = styled.div`
-    width: 100%;
-    max-width: 1180px;
-    margin: auto;
-    height: 100vh;
-`;
-
 const Landing = () => {
     return (
-        <StyledLanding>
+        <div className="w-full max-w-[1180px] mx-auto h-screen">
             <Navbar />
             <Hero />
             <Footer />
-        </StyledLanding >
+        </div>
     );
 };
 

@@ -1,66 +1,42 @@
-import styled from 'styled-components';
-import { cssVar, lighten } from 'polished';
-
-const StyledContextMenu = styled.div`
-    z-index: 10;
-    position: absolute;
-    top: ${({ position }) => position.y + 'px'};
-    left: ${({ position }) => position.x + 'px'};
-    translate: 0, -50%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    width: 190px;
-    height: fit-content;
-    padding: 7px;
-
-    border-radius: 3px;
-    background-color: ${lighten(0.05, cssVar('--down-river'))};
-    box-shadow: var(--box-shadow);
-`;
-
-
-const variants = {
-    danger: {
-        hoverBackground: 'var(--error-danger)',
-        hoverColor: 'var(--lavender-blush)',
-        color: 'var(--error-danger)',
-    }
-};
-
-
-export const ContextItem = styled.div`
-    cursor: pointer;
-    width: 100%;
-    height: 35px;
-
-    display: flex;
-    align-items: center;
-
-    padding-left: 7px;
-    border-radius: 3px;
-
-    font-size: 0.9rem;
-    color: ${({ variant }) => variants[variant] ? variants[variant].color : cssVar('--lavender-blush')};
-
-    &:hover{
-        background-color: ${({ variant }) => variants[variant] ? variants[variant].hoverBackground : cssVar('--azure-radiance')};
-        color: ${({ variant }) => variants[variant] ? variants[variant].hoverColor : cssVar('--lavender-blush')};
-    }
-`
+import React from 'react';
 
 const ContextMenu = ({ children, contextMenu, position }) => {
-    if (!contextMenu) return;
+    if (!contextMenu) return null;
 
     return (
-        <StyledContextMenu position={position}>
+        <div
+            className={`z-10 absolute`}
+            style={{
+                top: position.y,
+                left: position.x,
+                transform: 'translateY(-50%)',
+                width: '190px',
+                padding: '7px',
+                borderRadius: '3px',
+                backgroundColor: 'rgba(40, 48, 70, 0.95)', // This should be the lightened color of your --down-river variable
+                boxShadow: 'var(--box-shadow)', // Make sure to define this in your CSS
+            }}
+        >
             {children}
-        </StyledContextMenu>
+        </div>
     );
 };
 
+const ContextItem = ({ variant = 'default', onClick, children }) => {
+    const baseStyle = `cursor-pointer w-full h-[35px] flex items-center pl-2 rounded-[3px] text-sm`;
+    const variantStyles = {
+        danger: 'text-error-danger hover:bg-error-danger hover:text-lavender-blush',
+        default: 'text-lavender-blush hover:bg-azure-radiance hover:text-lavender-blush',
+    };
 
-export default ContextMenu;
+    return (
+        <div
+            className={`${baseStyle} ${variantStyles[variant]}`}
+            onClick={onClick}
+        >
+            {children}
+        </div>
+    );
+};
+
+export { ContextMenu, ContextItem };

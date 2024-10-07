@@ -26,7 +26,7 @@ const FriendsList = () => {
     useEffect(() => {
         dispatch(fetchFriendRequests());
         if (success) dispatch(reset());
-    }, []);
+    }, [dispatch, success]);
 
     const handleReject = (id) => { dispatch(deleteFriendRequest(id)); };
     const handleAccept = (id) => {
@@ -34,40 +34,52 @@ const FriendsList = () => {
         socket.emit('accept_friend_request_notification', user.details.username, id);
     };
 
-    if (loading) return (
-        <>
-            <Loading />
-            <Loading />
-            <Loading />
-            <Loading />
-            <Loading />
-        </>
-    );
+    if (loading) {
+        return (
+            <>
+                <Loading />
+                <Loading />
+                <Loading />
+                <Loading />
+                <Loading />
+            </>
+        );
+    }
 
     return (
         <>
             {comingFriendRequests?.map((friend) => (
-                <Friend key={friend._id}>
-                    <ProfileIcon avatar={friend.avatar} />
-                    <p>{friend.username}</p>
-                    <div className="actions">
-                        <CircleButton onClick={() => handleAccept(friend._id)}><AiOutlineCheck /></CircleButton>
-                        <CircleButton onClick={() => handleReject(friend._id)}><AiOutlineClose /></CircleButton>
+                <Friend key={friend._id} className="flex items-center justify-between">
+                    <div className="flex items-center">
+                        <ProfileIcon avatar={friend.avatar} />
+                        <p className="ml-2">{friend.username}</p>
+                    </div>
+                    <div className="flex space-x-2 actions">
+                        <CircleButton onClick={() => handleAccept(friend._id)}>
+                            <AiOutlineCheck />
+                        </CircleButton>
+                        <CircleButton onClick={() => handleReject(friend._id)}>
+                            <AiOutlineClose />
+                        </CircleButton>
                     </div>
                 </Friend>
             ))}
 
             {outgoingFriendRequests?.map((friend) => (
-                <Friend key={friend._id}>
-                    <ProfileIcon avatar={friend.avatar} />
-                    <p>{friend.username}</p>
-                    <div className="actions">
-                        <CircleButton onClick={() => handleReject(friend._id)}><AiOutlineClose /></CircleButton>
+                <Friend key={friend._id} className="flex items-center justify-between">
+                    <div className="flex items-center">
+                        <ProfileIcon avatar={friend.avatar} />
+                        <p className="ml-2">{friend.username}</p>
+                    </div>
+                    <div className="flex space-x-2 actions">
+                        <CircleButton onClick={() => handleReject(friend._id)}>
+                            <AiOutlineClose />
+                        </CircleButton>
                     </div>
                 </Friend>
             ))}
         </>
-    )
+    );
 };
 
 export default FriendsList;
